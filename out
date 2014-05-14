@@ -1,0 +1,284 @@
+Script started on Wed 07 May 2014 11:45:40 AM UTC
+]0;root@mongo:~/imp/quickstart[?1034h[root@mongo quickstart]# /sbin/service rabbitmq-server status[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[21Pman rabbitmqctl/sbin/service rabbitmq-server status
+Redirecting to /bin/systemctl status  rabbitmq-server.service
+rabbitmq-server.service - RabbitMQ broker
+	  Loaded: loaded (/usr/lib/systemd/system/rabbitmq-server.service; disabled)
+	  Active: [1;32mactive (running)[0m since Fri 2014-05-02 15:46:35 UTC; 4 days ago
+	 Process: 31951 ExecStartPost=/usr/lib/rabbitmq/bin/rabbitmqctl wait /var/run/rabbitmq/pid (code=exited, status=0/SUCCESS)
+	Main PID: 31950 (beam)
+	  CGroup: name=systemd:/system/rabbitmq-server.service
+		  ├─31950 /usr/lib64/erlang/erts-5.9.3.1/bin/beam -W w -K true -A30 -P 1048576 -- -root /usr/lib64/erlang -progname erl -- -home /var/lib/rabbitmq -- -pa /usr/lib/rabbitmq/lib/rabbitmq_server-3.1.5/sbin/../ebin -noshell -noinput -s rabbit boot -sname r...
+		  ├─32030 inet_gethost 4
+		  └─32031 inet_gethost 4
+
+May 02 15:46:31 mongo rabbitmqctl[31951]: pid is 31950 ...
+May 02 15:46:32 mongo rabbitmq-server[31950]: RabbitMQ 3.1.5. Copyright (C) 2007-2013 GoPivotal, Inc.
+May 02 15:46:32 mongo rabbitmq-server[31950]: ##  ##      Licensed under the MPL.  See http://www.rabbitmq.com/
+May 02 15:46:32 mongo rabbitmq-server[31950]: ##  ##
+May 02 15:46:32 mongo rabbitmq-server[31950]: ##########  Logs: /var/log/rabbitmq/rabbit@mongo.log
+May 02 15:46:32 mongo rabbitmq-server[31950]: ######  ##        /var/log/rabbitmq/rabbit@mongo-sasl.log
+May 02 15:46:32 mongo rabbitmq-server[31950]: ##########
+May 02 15:46:35 mongo rabbitmq-server[31950]: Starting broker... completed with 7 plugins.
+May 02 15:46:35 mongo rabbitmqctl[31951]: ...done.
+May 02 15:46:35 mongo systemd[1]: Started RabbitMQ broker.
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# /sbin/service rabbitmq-server status[K[K[K[Kop
+Redirecting to /bin/systemctl stop  rabbitmq-server.service
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# [3P(reverse-i-search)`':[Ci': /sbin/service rabbitmq-server stopm': tail /var/log/imp/server.log -n 50[1@p[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[C[C[C[C[1Pagent[18Pimp export[C[C[C[C-c /etc/imp/agent.cfg client discover[root@mongo quickstart]#[C[C[C[C[C[C[C[C[C[C[C[C[C
+Traceback (most recent call last):
+  File "/bin/imp", line 23, in <module>
+    app()
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/app.py", line 208, in app
+    Commander.run(options.command, options, config)
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/command.py", line 76, in run
+    return function(options = options, config = config, **results)
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/app.py", line 142, in client
+    client = Client(config)
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/server/client.py", line 47, in __init__
+    self._connect(config)
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/server/client.py", line 59, in _connect
+    virtual_host = "/")
+  File "/usr/lib/python3.3/site-packages/amqplib/client_0_8/connection.py", line 129, in __init__
+    self.transport = create_transport(host, connect_timeout, ssl)
+  File "/usr/lib/python3.3/site-packages/amqplib/client_0_8/transport.py", line 281, in create_transport
+    return TCPTransport(host, connect_timeout)
+  File "/usr/lib/python3.3/site-packages/amqplib/client_0_8/transport.py", line 85, in __init__
+    raise socket.error(msg)
+UnboundLocalError: local variable 'msg' referenced before assignment
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# imp -c /etc/imp/agent.cfg client discover[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[7P/sbin/service rabbitmq-server stop[K[Kart
+Redirecting to /bin/systemctl start  rabbitmq-server.service
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# /sbin/service rabbitmq-server start[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cimp -c /etc/imp/agent.cfg client discover
+Waiting 2 seconds for responses
+Response from:
+
+0 agent(s) detected
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# imp -c /etc/imp/agent.cfg client discover[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[6P/sbin/service rabbitmq-server start[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cimp -c /etc/imp/agent.cfg client discover
+Waiting 2 seconds for responses
+Response from:
+
+0 agent(s) detected
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# imp export
+deps: 40
+depends: 61
+rels: 93
+name: 227
+stack: 54
+dir_file:12
+Sending resources and handler source to server
+Uploading source files
+Traceback (most recent call last):
+  File "/bin/imp", line 23, in <module>
+    app()
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/app.py", line 208, in app
+    Commander.run(options.command, options, config)
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/command.py", line 76, in run
+    return function(options = options, config = config, **results)
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/app.py", line 126, in export
+    export.run(compile)
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/export.py", line 225, in run
+    self.deploy_code(self._version)
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/export.py", line 314, in deploy_code
+    raise Exception("Unable to upload handler plugin code to the server")
+Exception: Unable to upload handler plugin code to the server
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# imp 
+dep_managers/ .imp          jsons/        libs/         main.cf       out           test.json     
+[root@mongo quickstart]# imp [K[K[K[Ksystemctl list-units  
+[?1h=UNIT                                                              LOAD   ACTIVE SUB       DESCRIPTION[m
+proc-sys-fs-binfmt_misc.automount                                 loaded active waiting   Arbitrary Executable File Formats File System Automount Point[m
+sys-devices-pci0000:00-0000:00:03.0-virtio0-net-eth0.device       loaded active plugged   /sys/devices/pci0000:00/0000:00:03.0/virtio0/net/eth0[m
+sys-devices-pci0000:00-0000:00:04.0-virtio1-block-vda-vda1.device loaded active plugged   /sys/devices/pci0000:00/0000:00:04.0/virtio1/block/vda/vda1[m
+sys-devices-pci0000:00-0000:00:04.0-virtio1-block-vda-vda2.device loaded active plugged   /sys/devices/pci0000:00/0000:00:04.0/virtio1/block/vda/vda2[m
+sys-devices-pci0000:00-0000:00:04.0-virtio1-block-vda.device      loaded active plugged   /sys/devices/pci0000:00/0000:00:04.0/virtio1/block/vda[m
+sys-devices-platform-serial8250-tty-ttyS2.device                  loaded active plugged   /sys/devices/platform/serial8250/tty/ttyS2[m
+sys-devices-platform-serial8250-tty-ttyS3.device                  loaded active plugged   /sys/devices/platform/serial8250/tty/ttyS3[m
+sys-devices-pnp0-00:05-tty-ttyS0.device                           loaded active plugged   /sys/devices/pnp0/00:05/tty/ttyS0[m
+sys-devices-pnp0-00:06-tty-ttyS1.device                           loaded active plugged   /sys/devices/pnp0/00:06/tty/ttyS1[m
+sys-module-configfs.device                                        loaded active plugged   /sys/module/configfs[m
+sys-subsystem-net-devices-eth0.device                             loaded active plugged   /sys/subsystem/net/devices/eth0[m
+-.mount                                                           loaded active mounted   /[m
+dev-hugepages.mount                                               loaded active mounted   Huge Pages File System[m
+dev-mqueue.mount                                                  loaded active mounted   POSIX Message Queue File System[m
+etc-machine\x2did.mount                                           loaded active mounted   /etc/machine-id[m
+sys-kernel-config.mount                                           loaded active mounted   Configuration File System[m
+sys-kernel-debug.mount                                            loaded active mounted   Debug File System[m
+tmp.mount                                                         loaded active mounted   Temporary Directory[m
+systemd-ask-password-plymouth.path                                loaded active waiting   Forward Password Requests to Plymouth Directory Watch[m
+systemd-ask-password-wall.path                                    loaded active waiting   Forward Password Requests to Wall Directory Watch[m
+acpid.service                                                     loaded active running   ACPI Event Daemon[m
+auditd.service                                                    loaded active running   Security Auditing Service[m
+cloud-config.service                                              loaded active exited    Apply the settings specified in cloud-config[m
+cloud-final.service                                               loaded active exited    Execute cloud user/final scripts[m
+cloud-init-local.service                                          loaded active exited    Initial cloud-init job (pre-networking)[m
+cloud-init.service                                                loaded active exited    Initial cloud-init job (metadata service crawler)[m
+crond.service                                                     loaded active running   Command Scheduler[m
+dbus.service                                                      loaded active running   D-Bus System Message Bus[m
+fedora-readonly.service                                           loaded active exited    Configure read-only root support[m
+getty@tty1.service                                                loaded active running   Getty on tty1[m
+imp-agent.service                                                 loaded [1;31mfailed failed   [0m The agent of the IMP platform[m
+imp-server.service                                                loaded active running   The server of the IMP platform[m
+iprdump.service                                                   loaded active running   LSB: Start the ipr dump daemon[m
+iprinit.service                                                   loaded active running   LSB: Start the ipr init daemon[m
+iprupdate.service                                                 loaded active running   LSB: Start the iprupdate utility[m
+network.service                                                   loaded active exited    LSB: Bring up/down networking[m
+NetworkManager.service                                            loaded active running   Network Manager[m
+polkit.service                                                    loaded active running   Authorization Manager[m
+rabbitmq-server.service                                           loaded active running   RabbitMQ broker[m
+rsyslog.service                                                   loaded active running   System Logging Service[m
+sendmail.service                                                  loaded active running   Sendmail Mail Transport Agent[m
+serial-getty@ttyS0.service                                        loaded active running   Serial Getty on ttyS0[m
+sm-client.service                                                 loaded active running   Sendmail Mail Transport Client[m
+sshd.service                                                      loaded active running   OpenSSH server daemon[m
+systemd-journald.service                                          loaded active running   Journal Service[m
+systemd-logind.service                                            loaded active running   Login Service[m
+systemd-remount-fs.service                                        loaded active exited    Remount Root and Kernel File Systems[m
+systemd-sysctl.service                                            loaded active exited    Apply Kernel Variables[m
+systemd-tmpfiles-setup.service                                    loaded active exited    Recreate Volatile Files and Directories[m
+systemd-udev-settle.service                                       loaded active exited    udev Wait for Complete Device Initialization[m
+systemd-udev-trigger.service                                      loaded active exited    udev Coldplug all Devices[m
+systemd-udevd.service                                             loaded active running   udev Kernel Device Manager[m
+systemd-user-sessions.service                                     loaded active exited    Permit User Sessions[m
+systemd-vconsole-setup.service                                    loaded active exited    Setup Virtual Console[m
+dbus.socket                                                       loaded active running   D-Bus System Message Bus Socket[m
+syslog.socket                                                     loaded active running   Syslog Socket[m
+systemd-initctl.socket                                            loaded active listening /dev/initctl Compatibility Named Pipe[m
+systemd-journald.socket                                           loaded active running   Journal Socket[m
+systemd-shutdownd.socket                                          loaded active listening Delayed Shutdown Socket[m
+systemd-udevd-control.socket                                      loaded active running   udev Control Socket[m
+systemd-udevd-kernel.socket                                       loaded active running   udev Kernel Socket[m
+basic.target                                                      loaded active active    Basic System[m
+cloud-config.target                                               loaded active active    Cloud-config availability[m
+cryptsetup.target                                                 loaded active active    Encrypted Volumes[m
+getty.target                                                      loaded active active    Login Prompts[m
+initrd-switch-root.target                                         loaded active active    Switch Root[m
+local-fs-pre.target                                               loaded active active    Local File Systems (Pre)[m
+:[K[K [KESCESC[KOO[KAA[K[K:[K[K[?1l>]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# systemctl list-units  | gerp[K[K[Krep imp
+[01;31m[Kimp[m[K-agent.service           loaded failed failed    The agent of the IMP platform
+[01;31m[Kimp[m[K-server.service          loaded active running   The server of the IMP platform
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# systemctl list-units  | grep imp[K[12Pimp export^C
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# systemctl -[Kimp-agent.se[K[Ksimp-agent.timp-agent.aimp-agent.rimp-agent.timp-agent. imp-agent.[C[C[C[C[C[C[C[C[C[C[K.service
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# systemctl start imp-agent.service[1Plist-units  | grep imp
+[01;31m[Kimp[m[K-agent.service           loaded active running   The agent of the IMP platform
+[01;31m[Kimp[m[K-server.service          loaded active running   The server of the IMP platform
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# systemctl list-units  | grep impstart imp-agent.service[1Plist-units  | grep imp[K[12Pimp export-c /etc/imp/agent.cfg client discover[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[6P/sbin/service rabbitmq-server start[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cimp -c /etc/imp/agent.cfg client discover
+Waiting 2 seconds for responses
+Response from:
+ - mongo
+
+1 agent(s) detected
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# ssh vv[Kmmdb2
+The authenticity of host '172.16.34.21 (172.16.34.21)' can't be established.
+RSA key fingerprint is 97:de:79:ce:66:45:c4:70:c6:79:db:f8:17:19:88:c0.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '172.16.34.21' (RSA) to the list of known hosts.
+Last login: Mon Apr 28 08:31:51 2014
+]0;root@vmmdb2:~[?1034h[root@vmmdb2 ~]# logout
+Connection to 172.16.34.21 closed.
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# ssh vmmdb2[K3
+Last login: Mon Apr 28 07:08:44 2014
+]0;root@vmmdb3:~[?1034h[root@vmmdb3 ~]# logout
+Connection to 172.16.34.20 closed.
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# ssh vmmdb3[K4
+The authenticity of host '172.16.34.18 (172.16.34.18)' can't be established.
+RSA key fingerprint is c7:0c:79:bd:77:c2:7b:01:0a:b2:40:a8:41:e9:2a:be.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '172.16.34.18' (RSA) to the list of known hosts.
+Last login: Mon Apr 28 07:09:02 2014
+]0;root@vmmdb4:~[?1034h[root@vmmdb4 ~]# logout
+Connection to 172.16.34.18 closed.
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# ssh vmmdb4[K5
+The authenticity of host '172.16.34.2 (172.16.34.2)' can't be established.
+RSA key fingerprint is 74:a3:f0:bc:98:38:5c:31:e1:b6:50:ed:43:bc:b6:e0.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '172.16.34.2' (RSA) to the list of known hosts.
+Last login: Mon Apr 28 07:08:44 2014
+]0;root@vmmdb5:~[?1034h[root@vmmdb5 ~]# cat /root/.ssh/authorized_keys[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Klogout
+Connection to 172.16.34.2 closed.
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# ssh vmmdb5[K1
+Last login: Fri May  2 15:29:11 2014 from 172.16.34.17
+]0;root@vmmdb1:~[?1034h[root@vmmdb1 ~]# logout
+Connection to 172.16.34.22 closed.
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# ssh vmmdb15432imp -c /etc/imp/agent.cfg client discover[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[9Psystemctl list-units  | grep imp[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cimp -c /etc/imp/agent.cfg client discover
+Waiting 2 seconds for responses
+Response from:
+ - mongo
+
+1 agent(s) detected
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# imp export
+deps: 40
+depends: 61
+rels: 93
+name: 227
+stack: 54
+dir_file:12
+Sending resources and handler source to server
+Uploading source files
+Traceback (most recent call last):
+  File "/bin/imp", line 23, in <module>
+    app()
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/app.py", line 208, in app
+    Commander.run(options.command, options, config)
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/command.py", line 76, in run
+    return function(options = options, config = config, **results)
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/app.py", line 126, in export
+    export.run(compile)
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/export.py", line 225, in run
+    self.deploy_code(self._version)
+  File "/usr/lib/python3.3/site-packages/imp-0.10.7-py3.3.egg/Imp/export.py", line 314, in deploy_code
+    raise Exception("Unable to upload handler plugin code to the server")
+Exception: Unable to upload handler plugin code to the server
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# imp export-c /etc/imp/agent.cfg client discover[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cssh vmmdb1[K5432imp -c /etc/imp/agent.cfg client discover[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[9Psystemctl list-units  | grep imp[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cimp -c /etc/imp/agent.cfg client discover[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[9Psystemctl list-units  | grep impstart imp-agent.service[1Plist-units  | grep imp
+[01;31m[Kimp[m[K-agent.service           loaded active running   The agent of the IMP platform
+[01;31m[Kimp[m[K-server.service          loaded active running   The server of the IMP platform
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# systemctl list-units  | grep imp[K[K[Krabbit
+[01;31m[Krabbit[m[Kmq-server.service     loaded active running   RabbitMQ broker
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# systemctl list-units  | grep rabbit[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Krestart imp-server.service
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# systemctl restart imp-server.service[1Plist-units  | grep rabbit[3Pimp
+[01;31m[Kimp[m[K-agent.service           loaded active running   The agent of the IMP platform
+[01;31m[Kimp[m[K-server.service          loaded active running   The server of the IMP platform
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# systemctl list-units  | grep imprestart imp-server.service[1Plist-units  | grep rabbitrestart imp-server.service[1Pimp-server.service[1Pimp-server.service[1Pimp-server.service[1Pimp-server.service[1Pimp-server.service[1Pimp-server.service[1Pimp-server.service[1Pimp-server.servicesimp-server.servicetimp-server.serviceaimp-server.servicetimp-server.serviceuimp-server.servicesimp-server.service
+Unknown operation 'statusimp-server.service'.
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# systemctl statusimp-server.service imp-server.service
+imp-server.service - The server of the IMP platform
+	  Loaded: loaded (/usr/lib/systemd/system/imp-server.service; disabled)
+	  Active: [1;32mactive (running)[0m since Wed 2014-05-07 11:50:22 UTC; 14s ago
+	Main PID: 24318 (imp)
+	  CGroup: name=systemd:/system/imp-server.service
+		  └─24318 /usr/bin/python3 /usr/bin/imp -c /etc/imp/server.cfg server
+
+May 07 11:50:22 mongo systemd[1]: Starting The server of the IMP platform...
+May 07 11:50:22 mongo systemd[1]: Started The server of the IMP platform.
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# time
+
+real	0m0.000s
+user	0m0.000s
+sys	0m0.000s
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# dat
+bash: dat: command not found
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# e[Kdatte[K[Ke
+Wed May  7 11:50:45 UTC 2014
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# [3P(reverse-i-search)`':[Ci': time[1@m[C[C[C[Cp': systemctl status imp-server.service[24P ': imp export[1@e[C[C[C[1@x[C[C[C[3P[root@mongo quickstart]#[C
+deps: 40
+depends: 61
+rels: 93
+name: 227
+stack: 54
+dir_file:12
+Sending resources and handler source to server
+Uploading source files
+Uploading 46 files
+Only 3 files are new and need to be uploaded
+Sending resource updates to server
+Committed resources with version 1399463454
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# spy
+Traceback (most recent call last):
+  File "/bin/spy", line 14, in <module>
+    password="guest", virtual_host="/")
+  File "/usr/lib/python3.3/site-packages/amqplib/client_0_8/connection.py", line 129, in __init__
+    self.transport = create_transport(host, connect_timeout, ssl)
+  File "/usr/lib/python3.3/site-packages/amqplib/client_0_8/transport.py", line 281, in create_transport
+    return TCPTransport(host, connect_timeout)
+  File "/usr/lib/python3.3/site-packages/amqplib/client_0_8/transport.py", line 71, in __init__
+    for res in socket.getaddrinfo(host, port, 0, socket.SOCK_STREAM, socket.SOL_TCP):
+socket.gaierror: [Errno -2] Name or service not known
+]0;root@mongo:~/imp/quickstart[root@mongo quickstart]# exit
+
+Script done on Wed 07 May 2014 11:51:18 AM UTC

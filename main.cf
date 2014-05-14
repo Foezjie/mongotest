@@ -1,0 +1,76 @@
+# configure an imp mgmt server
+ssh_key = ssh::Key(name = "dummy", public_key = "abcd")
+yum::Repository(host = vm1, baseurl = "http://people.cs.kuleuven.be/~bart.vanbrabant/rpm/", name = "RPM", enabled = 1, gpgcheck = 0)
+yum::Repository(host = vmMDB1, baseurl = "http://people.cs.kuleuven.be/~bart.vanbrabant/rpm/", name = "RPM", enabled = 1, gpgcheck = 0)
+yum::Repository(host = vmMDB2, baseurl = "http://people.cs.kuleuven.be/~bart.vanbrabant/rpm/", name = "RPM", enabled = 1, gpgcheck = 0)
+yum::Repository(host = vmMDB3, baseurl = "http://people.cs.kuleuven.be/~bart.vanbrabant/rpm/", name = "RPM", enabled = 1, gpgcheck = 0)
+yum::Repository(host = vmMDB4, baseurl = "http://people.cs.kuleuven.be/~bart.vanbrabant/rpm/", name = "RPM", enabled = 1, gpgcheck = 0)
+yum::Repository(host = vmMDB5, baseurl = "http://people.cs.kuleuven.be/~bart.vanbrabant/rpm/", name = "RPM", enabled = 1, gpgcheck = 0)
+
+vm1 = ip::Host(name = "mongo", os = "fedora-18", ip = "172.16.34.17")
+
+vmMDB1 = ip::Host(name = "vmmdb1", os = "fedora-18", ip = "172.16.34.20")
+vmMDB2 = ip::Host(name = "vmmdb2", os = "fedora-18", ip = "172.16.34.19")
+vmMDB3 = ip::Host(name = "vmmdb3", os = "fedora-18", ip = "172.16.34.2")
+vmMDB4 = ip::Host(name = "vmmdb4", os = "fedora-18", ip = "172.16.34.18")
+vmMDB5 = ip::Host(name = "vmmdb5", os = "fedora-18", ip = "172.16.34.21")
+
+amqp_server = rabbitmq::Server(host = vm1)
+imp_server = imp::Server(host = vm1, servers = amqp_server, public_key = ssh_key)
+
+imp_agent_s = imp::Agent(host = vm1, servers = amqp_server, imp_server = imp_server)
+imp_agent_1 = imp::Agent(host = vmMDB1, servers = amqp_server, imp_server = imp_server)
+imp_agent_2 = imp::Agent(host = vmMDB2, servers = amqp_server, imp_server = imp_server)
+imp_agent_3 = imp::Agent(host = vmMDB3, servers = amqp_server, imp_server = imp_server)
+imp_agent_4 = imp::Agent(host = vmMDB4, servers = amqp_server, imp_server = imp_server)
+imp_agent_5 = imp::Agent(host = vmMDB5, servers = amqp_server, imp_server = imp_server)
+
+## MongoDB ## 
+mongo1 = mongodb::MongoDB(host = vmMDB1)
+mongo2 = mongodb::MongoDB(host = vmMDB2)
+mongo3 = mongodb::MongoDB(host = vmMDB3)
+mongo4 = mongodb::MongoDB(host = vmMDB4)
+mongo5 = mongodb::MongoDB(host = vmMDB5)
+
+mongo1Server = mongodb::MongoDBServer(host=vmMDB1)
+mongo2Server = mongodb::MongoDBServer(host=vmMDB2)
+mongo3Server = mongodb::MongoDBServer(host=vmMDB3)
+mongo4Server = mongodb::MongoDBServer(host=vmMDB4)
+mongo5Server = mongodb::MongoDBServer(host=vmMDB5)
+
+
+mongoN1 = mongodb::MongoDBNode(host=mongo1, server=mongo1Server, datadir = "/mnt/mongod")
+mongoN2 = mongodb::MongoDBNode(host=mongo2, server=mongo2Server, datadir = "/mnt/mongod")
+mongoN3 = mongodb::MongoDBNode(host=mongo3, server=mongo3Server, datadir = "/mnt/mongod")
+mongoN4 = mongodb::MongoDBNode(host=mongo4, server=mongo4Server, datadir = "/mnt/mongod")
+mongoN5 = mongodb::MongoDBNode(host=mongo5, server=mongo5Server, datadir = "/mnt/mongod")
+
+
+set1 = mongodb::MongoDBReplicaSet(name="repl1", nodes = [mongoN1, mongoN2, mongoN3])
+set2 = mongodb::MongoDBReplicaSet(name="repl2", nodes = [mongoN4, mongoN5])
+
+controller1 = mongodb::MongoDBReplicaSetController(host=mongo1, replicaSet = set1, connectingNode = mongoN1, shardController = shardController)
+controller2 = mongodb::MongoDBReplicaSetController(host=mongo4, replicaSet = set2, connectingNode = mongoN4, shardController = shardController)
+
+mongoDBCluster = mongodb::MongoDBShardCluster(replicaSets = [set1, set2])
+shardController = mongodb::MongoDBShardController(host=mongo5, accessServer = access3, shardCluster = mongoDBCluster)
+
+access1 = mongodb::MongoDBAccessServer(host=mongo2, server= mongo2Server, shardCluster = mongoDBCluster, configServer = config1)
+access2 = mongodb::MongoDBAccessServer(host=mongo3, server= mongo3Server, shardCluster = mongoDBCluster, configServer = config1)
+access3 = mongodb::MongoDBAccessServer(host=mongo4, server= mongo4Server, shardCluster = mongoDBCluster, configServer = config1)
+
+config1 = mongodb::MongoDBConfigServer(host=mongo2, server= mongo2Server, shardCluster = mongoDBCluster)
+
+database1 = mongodb::MongoDBDatabase(name="testdb", shardCluster = mongoDBCluster)
+collection1 = mongodb::MongoDBCollection(name="testcol", database = database1)
+key1 = mongodb::MongoDBKey(name = "_id", valueString = "hashed", collection = collection1)
+
+databaseYCSB = mongodb::MongoDBDatabase(name="ycsb", shardCluster = mongoDBCluster)
+collectionYCSB = mongodb::MongoDBCollection(name="usertable", database = databaseYCSB)
+keyYCSB = mongodb::MongoDBKey(name = "_id", valueString = "hashed", collection = collectionYCSB)
+
+databaseYCSB2 = mongodb::MongoDBDatabase(name="ycsb-2", shardCluster = mongoDBCluster)
+collectionYCSB2 = mongodb::MongoDBCollection(name="usertable", database = databaseYCSB2)
+keyYCSB2 = mongodb::MongoDBKey(name = "_id", valueString = "hashed", collection = collectionYCSB2)
+
+monitoringAgent = mongodb::MongoDBMonitoringAgent(key = "cac82dfebac6a861d6bd1cb147f06d57", host = vmMDB4)

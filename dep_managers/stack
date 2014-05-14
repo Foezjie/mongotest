@@ -1,0 +1,58 @@
+@dependency_manager
+def scope_dependencies(model, resources):
+    """
+        *Heuristic*
+        File, package and service entities defined in the same scope almost always define a "stack" representing a service
+          consisting of its configfile, the package that installs it and the service itself.
+        We use this information to automatically create the required dependencies between them.
+        [Package --> (Config)File --> Service]
+    """
+    #first we look for all "service stacks": scopes that have a service, a (config) file and a package
+    srv_stacks = find_srv_stacks(resources)
+    deps_per_stack = [] 
+    #print("Stacks found: %s" % len(srv_stacks))
+    for stack in srv_stacks:
+        deps_per_stack.append(setup_stack_deps(stack))
+    print("stack: %s" % sum(deps_per_stack))
+ 
+def find_srv_stacks(resources):
+    #list of 3-tuples of resources that are in the same scope. (files,services, packages)
+    stacks = []
+    for res in resources.values():
+        scope_pkg = []
+        scope_cfg = []
+        scope_srv = []
+        model_instance = res.model
+        instance_scope = model_instance.__scope__
+        scope_vars = instance_scope.variables()
+        scope_cfg = [x.value for x in scope_vars if x.value.__class__.__name__ == "File"]
+        scope_srv = [x.value for x in scope_vars if x.value.__class__.__name__ == "Service"]
+        scope_pkg = [x.value for x in scope_vars if x.value.__class__.__name__ == "Package"]
+ 
+        if scope_srv and (scope_pkg or scope_cfg):
+            stacks.append({'pkg': scope_pkg, 'srv': scope_srv, 'cfg': scope_cfg})
+ 
+    return stacks
+ 
+def setup_stack_deps(stack):
+    deps = 0
+    for srv in stack['srv']:
+        srv = Resource.get_resource(srv)
+        for pkg in stack['pkg']:
+            pkg = Resource.get_resource(pkg)
+            if pkg.id not in srv.requires:
+                srv.requires.add(pkg.id)
+                deps = deps + 1
+        for cfg in stack['cfg']:
+            cfg = Resource.get_resource(cfg)
+            if cfg.id not in srv.requires:
+                srv.requires.add(cfg.id)
+                deps = deps + 1
+    for cfg in stack['cfg']:
+        cfg = Resource.get_resource(cfg)
+        for pkg in stack['pkg']:
+            pkg = Resource.get_resource(pkg)
+            if pkg.id not in cfg.requires:
+                cfg.requires.add(pkg.id)
+                deps = deps + 1
+    return deps

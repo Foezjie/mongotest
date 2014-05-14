@@ -1,0 +1,36 @@
+@dependency_manager
+def name_dependencies(model, resources):
+    deps = 0
+    for _id, res in resources.items():
+        similar_resources = []
+        res_model = res.model
+        #A service depends on files and packages
+        if res_model.__module__ == "std" and res_model.__class__.__name__ == "Service":
+            for other_id, other_res in resources.items():
+                similar_reg = re.compile("std::File.*%s.*%s.*" % (res.model.host.name, res.name))
+                if other_res.model.__class__.__name__ == "File" and similar_reg.match(str(other_id)):
+                    similar_resources.append(other_res)
+            
+            for similar_res in similar_resources:
+                if similar_res.id not in res.requires:
+                    res.requires.add(similar_res.id)
+                    deps = deps + 1
+ 
+        #Files must be deployed after the package 
+        if res_model.__module__ == "std" and res_model.__class__.__name__ == "Package":
+            #Sometimes a version number is added to the packages name (like cassandra12).
+            #Removing the numbers will help in finding similar resources.
+            pkg_name = ''.join(i for i in res.name if not i.isdigit())
+            #Some packages are named like [name]-suffix (taskworker-core, openssh-server,...)
+            #We only check for the first part and hopefully add more requirements
+            pkg_name = pkg_name.split("-")[0]
+            for other_id, other_res in resources.items():
+                similar_reg = re.compile("std::File.*%s.*%s.*" % (res.model.host.name, pkg_name))
+                if other_res.model.__class__.__name__ == "File" and similar_reg.match(str(other_id)):
+                    similar_resources.append(other_res)
+            
+            for similar_res in similar_resources: #avoid circular dependencies
+                if res.id not in similar_res.requires and similar_res not in res.requires:
+                    similar_res.requires.add(res.id)
+                    deps = deps + 1
+    print("name: %s" % deps)

@@ -1,0 +1,68 @@
+@dependency_manager
+def use_rel_multiplicity(model, resources):
+    added = 0
+    for lib in model.get_scopes():
+        for concept in lib.variables():
+            if concept.get_name().startswith("Entity"):
+                for attr_name in concept.value.get_all_attribute_names(): #anders niet de attr vd parents
+                    attr_value = concept.value.get_attribute(attr_name)
+                    if hasattr(attr_value, "end"): #Kijk of het een relatie is
+                        attr_end = attr_value.end
+                        if attr_end.low == 1 and attr_end.end.low == 0 and not attr_value.depends:
+                            added = added + 1
+                            attr_value.depends = True 
+    print("deps: %s" % added)
+
+def get_child_services(object):
+    services = []
+    for child_res in object._childeren:
+            if child_res.__module__ == "std" and child_res.__class__.__name__ == "Service":
+                services.append(Resource.get_resource(child_res))
+    return services
+ 
+def get_services(concept):
+    found_services = []
+    
+    if hasattr(concept, "value"):
+        for instance in concept.value:
+            if concept.__module__ == "std" and concept.__class__.__name__ == "Service":
+                found_services.append(Resource.get_resource(concept))
+             
+            if hasattr(instance, "_childeren"):
+                found_services.extend(get_child_services(instance))
+                
+    if hasattr(concept, "_childeren"):
+                found_services.extend(get_child_services(concept))                
+ 
+    return set(found_services)
+        
+@dependency_manager
+def use_relations(model, resources):
+    depends = 0
+    added = 0
+    for lib in model.get_scopes():
+        for concept in lib.variables():
+            if concept.get_name().startswith("Entity"):
+                concept_services = get_services(concept)
+                if concept_services is not None: #Als er geen services zijn moeten er sowieso geen deps opgesteld worden
+                    for attr_name in concept.value.get_all_attribute_names(): #anders niet de attr vd parents
+                        attr_value = concept.value.get_attribute(attr_name)
+                        if hasattr(attr_value, "end"): #Kijk of het een relatie is
+                            if attr_value.end.depends: #Kijk of het concept afhankelijk is vd andere kant
+                                depends = depends + 1
+                                for instance in concept.value: #Voor elke instantie v/h concept de deps opstellen
+                                    req_concepts = getattr(instance, attr_name)
+                                    req_resources = []
+                                    if hasattr(req_concepts, 'append'): #Check if QList
+                                        for req_concept in req_concepts:
+                                            for srv in get_child_services(req_concept):
+                                                req_resources.append(srv)
+                                    else:
+                                        for srv in get_services(req_concepts):
+                                                req_resources.append(srv)
+                                    for req_res in req_resources:
+                                        for service in concept_services:
+                                            if req_res not in service.requires and req_res.state != "stopped":
+                                                service.requires.add(req_res)
+                                                added = added + 1
+    print("depends: %s\nrels: %s" % (depends, added))
