@@ -1,0 +1,4 @@
+[config]
+lib-dir = libs
+export = 
+server = http://localhost:8888
